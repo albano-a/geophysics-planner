@@ -6,11 +6,11 @@ st.title("Informações das Disciplinas")
 
 df = pd.read_excel(
     "src/data/Disciplinas.xlsx",
-    sheet_name=["50.01.004", "50.01.005"],
+    sheet_name=["50.01.005", "50.01.004"],
     names=["Nome", "Periodo", "Prerequisitos", "Prende", "Descricao", "CargaHoraria"],
 )
 
-curriculo = st.selectbox("Currículo", ["50.01.004", "50.01.005"])
+curriculo = st.selectbox("Currículo", ["50.01.005", "50.01.004"])
 
 
 df_curriculo = df[curriculo]

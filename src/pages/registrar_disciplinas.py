@@ -108,3 +108,8 @@ if st.checkbox("Atividades Complementares"):
 percentual = min(carga_cursada / CARGA_TOTAL, 1.0)
 st.progress(percentual)
 st.write(f"{carga_cursada:.0f}h de {CARGA_TOTAL}h concluídas ({percentual*100:.1f}%)")
+st.metric(
+    "Carga Horária Concluída",
+    f"{carga_cursada} horas",
+    delta=f"{carga_cursada - (percentual * CARGA_TOTAL):.0f} horas desde a última atualização",
+)

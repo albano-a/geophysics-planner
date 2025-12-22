@@ -15,7 +15,7 @@ st.set_page_config(
 st.title("Disciplinas")
 
 
-cur = st.selectbox("Currículo", ["50.01.004", "50.01.005"])
+cur = st.selectbox("Currículo", ["50.01.005", "50.01.004"], index=0)
 
 pth = Path(f"src/data/{cur}.pdf")
 pdf = pth.read_bytes()
