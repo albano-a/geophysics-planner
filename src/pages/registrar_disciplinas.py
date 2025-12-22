@@ -35,36 +35,37 @@ if "checked_disciplinas" not in st.session_state:
 
 checked = []
 carga_cursada = 0
+# Cria as abas para cada ano
+abas = st.tabs([f"Ano {i}" for i in range(1, 6)])
 
 periodos = sorted(df["PeriodoRecomendado"].dropna().unique())
-# Agrupa períodos em pares para exibir em duas colunas
-for i in range(0, len(periodos), 3):
-    cols = st.columns(
-        3,
-        border=True,
-    )
-    for j in range(3):
-        if i + j < len(periodos):
-            periodo = periodos[i + j]
-            with cols[j]:
-                st.markdown(f"### {int(periodo)}º Período")
-                disciplinas_periodo = df[df["PeriodoRecomendado"] == periodo][
-                    "Nome"
-                ].tolist()
-                for disciplina in disciplinas_periodo:
-                    checked_box = st.checkbox(
-                        disciplina,
-                        key=f"{disciplina}_{periodo}",
-                        value=disciplina in st.session_state.checked_disciplinas,
-                    )
-                    if checked_box:
-                        checked.append(disciplina)
-                        st.session_state.checked_disciplinas.add(disciplina)
-                        carga_cursada += float(
-                            df[df["Nome"] == disciplina]["CargaHoraria"].values[0]
+
+for ano_idx, aba in enumerate(abas):
+    with aba:
+        cols = st.columns(2)
+        for p in range(2):
+            periodo_idx = ano_idx * 2 + p
+            if periodo_idx < len(periodos):
+                periodo = periodos[periodo_idx]
+                with cols[p]:
+                    st.markdown(f"### {int(periodo)}º Período")
+                    disciplinas_periodo = df[df["PeriodoRecomendado"] == periodo][
+                        "Nome"
+                    ].tolist()
+                    for disciplina in disciplinas_periodo:
+                        checked_box = st.checkbox(
+                            disciplina,
+                            key=f"{disciplina}_{periodo}",
+                            value=disciplina in st.session_state.checked_disciplinas,
                         )
-                    else:
-                        st.session_state.checked_disciplinas.discard(disciplina)
+                        if checked_box:
+                            checked.append(disciplina)
+                            st.session_state.checked_disciplinas.add(disciplina)
+                            carga_cursada += float(
+                                df[df["Nome"] == disciplina]["CargaHoraria"].values[0]
+                            )
+                        else:
+                            st.session_state.checked_disciplinas.discard(disciplina)
 
 st.divider()
 
