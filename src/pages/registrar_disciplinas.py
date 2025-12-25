@@ -33,11 +33,11 @@ CARGA_ATIVIDADE = 44
 if "checked_disciplinas" not in st.session_state:
     st.session_state.checked_disciplinas = set()
 
-checked = []
-carga_cursada = 0
-# Cria as abas para cada ano
-abas = st.tabs([f"Ano {i}" for i in range(1, 6)])
+checkbox_keys = []
+disciplinas_periodo_map = {}
 
+
+abas = st.tabs([f"Ano {i}" for i in range(1, 6)])
 periodos = sorted(df["PeriodoRecomendado"].dropna().unique())
 
 for ano_idx, aba in enumerate(abas):
@@ -53,19 +53,24 @@ for ano_idx, aba in enumerate(abas):
                         "Nome"
                     ].tolist()
                     for disciplina in disciplinas_periodo:
-                        checked_box = st.checkbox(
+                        key = f"{disciplina}_{periodo}"
+                        checkbox_keys.append(key)
+                        disciplinas_periodo_map[key] = disciplina
+                        st.checkbox(
                             disciplina,
-                            key=f"{disciplina}_{periodo}",
+                            key=key,
                             value=disciplina in st.session_state.checked_disciplinas,
                         )
-                        if checked_box:
-                            checked.append(disciplina)
-                            st.session_state.checked_disciplinas.add(disciplina)
-                            carga_cursada += float(
-                                df[df["Nome"] == disciplina]["CargaHoraria"].values[0]
-                            )
-                        else:
-                            st.session_state.checked_disciplinas.discard(disciplina)
+
+checked_disciplinas = set()
+for key in checkbox_keys:
+    if st.session_state.get(key, False):
+        checked_disciplinas.add(disciplinas_periodo_map[key])
+st.session_state.checked_disciplinas = checked_disciplinas
+
+carga_cursada = 0
+for disciplina in st.session_state.checked_disciplinas:
+    carga_cursada += float(df[df["Nome"] == disciplina]["CargaHoraria"].values[0])
 
 st.divider()
 

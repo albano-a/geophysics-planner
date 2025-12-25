@@ -33,20 +33,20 @@ st.subheader(
         else "P.C. indica que é uma Prática de Campo"
     ),
 )
-st.markdown(f"**Período**", help="Período em que a disciplina é ofertada.")
+st.markdown("**Período**", help="Período em que a disciplina é ofertada.")
 st.markdown(f"{periodo}")
 st.markdown(
-    f"**Carga Horária**",
+    "**Carga Horária**",
     help="Total de horas dedicadas à disciplina.",
 )
 st.markdown(f"{info_disciplina['CargaHoraria']} horas")
 st.markdown(
-    f"**Pré-requisitos**",
+    "**Pré-requisitos**",
     help="Disciplinas que devem ser cursadas antes desta disciplina.",
 )
 st.markdown(info_disciplina["Prerequisitos"])
 st.markdown(
-    f"**Pós-requisitos**",
+    "**Pós-requisitos**",
     help="Disciplinas que dependem desta disciplina como pré-requisito.",
 )
 st.markdown(f"{info_disciplina['Prende']}")
